@@ -37,3 +37,45 @@ No caso acima, estamos criando uma estrutura completa
 
 str2 := <NomeDaEstrutura{campo1: "valor1", campo3: 123}
 E no caso acima, apenas uma estrutura com o campo1 e o campo3, onde o campo2 e o campo4 estão com os valores padrão
+
+#NOTAS DA AULA 2
+Podemos instanciar objetos utilizando o operador 'new':
+var <nome> <NomeDaEstrutura>
+<nome> = new(<NomeDaEstrutura>)
+
+Contudo, precisamos indicar para a variável, que ela apontará para uma instância que será criada na sequência, usando o operador '*':
+var <nome> *<NomeDaEstrutura>
+<nome> = new(<NomeDaEstrutura>)
+
+Logo, um exemplo prático seria:
+var conta *ContaCorrente
+conta = new(ContaCorrente)
+
+Utilizando a saída do console, temos:
+
+fmt.Println(conta) //&{atributos} - Imprime o ponteiro e o conteúdo do espaço alocado em memória
+fmt.Println(&conta) //0xc99999999 - Imprime o endereço de memória
+fmt.Println(*conta) //{atributos} - Imprime o conteúdo do espaço alocado em memória
+
+Ao compararmos dois objetos com o mesmo conteúdo, o Go retornará true, pois o Go é inteligente pra saber que, estamos comparando o conteúdo e não o endereço de memória:
+fmt.Println(conta == conta2) //true
+
+A comparação acima retornará true para a instanciação de objetos usando:
+conta := ContaCorrente{campo: valor [...]}
+
+E
+conta := ContaCorrente{valor, [...]}
+
+Mas retornará false para a instanciação usando:
+var conta *ContaCorrente
+conta = new(ContaCorrente)
+
+Isso ocorre pois a criação utilizando new() instancia também um novo endereço na memória do programa.
+
+Podemos criar funções que vão atuar exatamente no ponteiro que chamou a função. Assim, não precisamos passar uma referência do objeto para a função, ou seja, podemos substituir isso:
+func withdraw(valor float64, conta ContaCorrente) {...}
+
+Por isso:
+func (conta *ContaCorrente) withdraw(valor float64) {...}
+
+#NOTAS DA AULA 3
