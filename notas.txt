@@ -1,0 +1,39 @@
+#NOTAS DA AULA 1
+
+No GoLang, o agrupamento de campos repetitivos deve ser criado em estruturas de código.
+
+Essa estrutura é conhecida como 'struct'.
+
+As structs devem, obrigatóriamente ter um prefixo e um sufixo:
+
+type <NomeDaEstrutura> struct {
+    ... atributos
+}
+
+A instanciação de estruturas no Go é feita utilizando chaves:
+<NomeDaEstrutura>{campo1: valor, campo2: valor}
+
+Ou
+
+<NomeDaEstrutura>{valor1, valor2}
+
+Não infomar os valores internos da struct, o GoLang atribui por padrão o zero-value:
+string = texto vazio
+int = zero
+float32 = zero
+float64 = zero
+bool = false
+
+Quando não utilizamos todos os campos da estrutura na inicialização, os demais campos são mantidos com os valores padrão:
+type <NomeDaEstrutura> struct {
+    campo1 string
+    campo2 string
+    campo3 int
+    campo4 float32
+}
+
+str1 := <NomeDaEstrutura>{"valor1", "valor2", 123, 0.0}
+No caso acima, estamos criando uma estrutura completa
+
+str2 := <NomeDaEstrutura{campo1: "valor1", campo3: 123}
+E no caso acima, apenas uma estrutura com o campo1 e o campo3, onde o campo2 e o campo4 estão com os valores padrão
