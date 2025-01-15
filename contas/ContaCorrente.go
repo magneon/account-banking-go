@@ -1,29 +1,32 @@
 package contas
 
-import "fmt"
+import (
+	"account-banking-go/titulares"
+	"fmt"
+)
 
 type ContaCorrente struct {
-	Titular       string
+	Titular       titulares.PessoaFisica
 	NumeroAgencia int
 	NumeroConta   int
-	Saldo         float64
+	saldo         float64
 }
 
 func (conta *ContaCorrente) Withdraw(valor float64) {
 	if valor > 0 {
-		if conta.Saldo > valor {
-			conta.Saldo -= valor
-			fmt.Println("Saque de", valor, "realizado com sucesso da conta de", conta.Titular, ". Novo Saldo", conta.Saldo)
+		if conta.saldo > valor {
+			conta.saldo -= valor
+			fmt.Println("Saque de", valor, "realizado com sucesso da conta de", conta.Titular.Nome, ". Novo Saldo", conta.saldo)
 		} else {
-			fmt.Println("Saldo insuficiente. Saldo atual", conta.Saldo)
+			fmt.Println("Saldo insuficiente. Saldo atual", conta.saldo)
 		}
 	}
 }
 
 func (conta *ContaCorrente) Deposit(valor float64) {
 	if valor > 0 {
-		conta.Saldo += valor
-		fmt.Println("Depósito de", valor, "realizado com sucesso na conta de", conta.Titular, ". Novo Saldo", conta.Saldo)
+		conta.saldo += valor
+		fmt.Println("Depósito de", valor, "realizado com sucesso na conta de", conta.Titular.Nome, ". Novo Saldo", conta.saldo)
 	} else {
 		fmt.Println("Não é possível depositar valores negativos. Refaça a operação.")
 	}
@@ -31,15 +34,19 @@ func (conta *ContaCorrente) Deposit(valor float64) {
 
 func (origem *ContaCorrente) Transfer(valor float64, destino *ContaCorrente) {
 	if valor > 0 {
-		if origem.Saldo >= valor {
+		if origem.saldo >= valor {
 			destino.Deposit(valor)
 			origem.Withdraw(valor)
 
-			fmt.Println("Transferindo", valor, "de", origem.Titular, "para", destino.Titular)
+			fmt.Println("Transferindo", valor, "de", origem.Titular.Nome, "para", destino.Titular.Nome)
 		} else {
 			fmt.Println("Saldo insuficiente para realizar essa transferência.")
 		}
 	} else {
 		fmt.Println("Não é possível transferir valores negativos. Refaça a operação.")
 	}
+}
+
+func (conta *ContaCorrente) Extract() {
+	fmt.Println("Seu saldo atualmente é de R$", conta.saldo)
 }

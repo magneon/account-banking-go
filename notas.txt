@@ -122,3 +122,42 @@ import (
 E para usá-lo, basta referenciarmos o alias 'file', assim:
 file.ContaCorrente{}
 
+#NOTAS DA AULA 4
+Para segregarmos nosso sistema em seus respectivos domínios podemos utilizar a composição entre objetos:
+type ContaCorrente struct {
+    Titular titulares.Titular
+}
+
+type Titular struct {
+    Nome string
+    CPF  string
+    Profissao string
+}
+
+Assim, temos mais controle sobre as entidades que criamos:
+titularRafael := titulares.Titular{Nome: "Rafael", CPF: "123123"}
+contaRafael := contas.ContaCorrente{Titular: titularRafael}
+
+No Go, podemos utilizar funções que alteram o valor do objeto original ou que alteram a cópia do  objeto original.
+
+Quando queremos alterar o objeto original, nas funções ou métodos, precisamos indicar o ponteiro a qual a função atuará:
+func (empregado *Empregado) aumentarSalario(valor float64) {
+    empregado.AumentarSalario(valor)
+    fmt.Println("Novo salário do funcionario", empregado.ObterSalario())
+}
+
+No caso acima, estamos alterando o salário do funcionário diretamente em sua referência. Veja abaixo:
+empregado1 := Empregado{Nome: Rafael, Salario: 1000}
+empregado1.AumentarSalario(1000)
+empregado1.ObterSalario() //Vai imprimir 2000: 1000 original + 1000 do aumento
+
+Veja esse outro caso:
+func (empregado Empregado) aumentarSalario(valor float64) {
+    empregado.AumentarSalario(valor)
+    fmt.Println("Novo salário do funcionario", empregado.ObterSalario())
+}
+
+No caso acima, estamos criando uma cópia do objeto empregado e atribuindo à variável 'empregado' do método. Consequentemente, o salário original, não será afetado:
+empregado1 := Empregado{Nome: Rafael, Salario: 1000}
+empregado1.AumentarSalario(1000)
+empregado1.ObterSalario() //Vai imprimir 1000: 1000 original
