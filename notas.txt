@@ -79,3 +79,46 @@ Por isso:
 func (conta *ContaCorrente) withdraw(valor float64) {...}
 
 #NOTAS DA AULA 3
+Quando queremos alterar o conteúdo de uma instância utilizando as funções, não podemos esquecer de apontar a variável para o ponteiro que contém o endereço do objeto:
+origem.Transferir(300, destino)
+
+func (origem *ContaCorrente) Transferir(valor float64, destino *ContaCorrente) {...}
+
+Caso esqueçamos de utilizar o ponteiro (*), a operação não afetará o objeto de destino:
+origem.Transferir(300, &destino)
+
+Distribuição do Sistema em Pacotes
+
+Para segregarmos o nosso sistema em pequenos pacotes, basta criarmos uma pasta com o nome do nosso pacote e criar um novo arquivo com a extensão .go:
+/src/<project>/<package>/file.go
+
+No nosso arquivo do programa, precisamos indicar o endereço onde o pacote se encontra desde a raiz do projeto:
+/src/<project>/<package>/file
+
+E ao utilizar qualquer recurso do 'file', temos que indicar também:
+conta := file.ContaCorrente{}
+
+Não podemos esquecer também da visibilidade dos pacotes e atributos. No Go, quando uma variável de instância é criada com a primeira letra em minúsculo, isso significa que a variável de instância só é visível dentro do próprio arquivo onde ela é declarada.
+type ContaCorrente struct {
+    titular string
+    agencia int
+    conta int
+    saldo float64
+}
+
+Para tornarmos a variável de instância visível pra outros locais, basta criarmos a variável com a primeira letra em maiúsculo.
+type ContaCorrente struct {
+    Titular string
+    Agencia int
+    Conta int
+    Saldo float64
+}
+
+Para tornar ainda mais fácil a utilização de pacotes no Go, podemos criar um alias para a importação de pacotes:
+import (
+    file "/src/<project>/<package>/file"
+)
+
+E para usá-lo, basta referenciarmos o alias 'file', assim:
+file.ContaCorrente{}
+

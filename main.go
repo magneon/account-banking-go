@@ -1,13 +1,9 @@
 package main
 
-import "fmt"
-
-type ContaCorrente struct {
-	titular       string
-	numeroAgencia int
-	numeroConta   int
-	saldo         float64
-}
+import (
+	contas "account-banking-go/contas"
+	"fmt"
+)
 
 func main() {
 	fmt.Println("Olá mundo, Go!")
@@ -19,38 +15,19 @@ func main() {
 
 	fmt.Println(titular, numeroAgencia, numeroConta, saldo)
 
-	conta1 := ContaCorrente{titular, numeroAgencia, numeroConta, saldo}
+	conta1 := contas.ContaCorrente{Titular: titular, NumeroAgencia: numeroAgencia, NumeroConta: numeroConta, Saldo: saldo}
 	fmt.Println(conta1)
 
-	conta2 := ContaCorrente{titular: "Talita de Lima Mesquita", numeroAgencia: 1, numeroConta: 12345, saldo: 1000.0}
+	conta2 := contas.ContaCorrente{Titular: "Talita de Lima Mesquita", NumeroAgencia: 1, NumeroConta: 12345, Saldo: 1000.0}
 	fmt.Println(conta2)
 
-	var conta3 *ContaCorrente
-	conta3 = new(ContaCorrente)
-	conta3.titular = "Francisca Francineide de Mesquita Moura"
-	conta3.saldo = 16000.0
+	var conta3 *contas.ContaCorrente
+	conta3 = new(contas.ContaCorrente)
+	conta3.Titular = "Francisca Francineide de Mesquita Moura"
+	conta3.Saldo = 16000.0
 	fmt.Println(conta3)
 
-	conta3.Withdraw(1100)
-	conta3.Deposit(-10000)
-}
-
-func (conta *ContaCorrente) Withdraw(valor float64) {
-	if valor > 0 {
-		if conta.saldo > valor {
-			conta.saldo -= valor
-			fmt.Println("Saque de", valor, "realizado com sucesso da conta de", conta.titular, ". Novo saldo", conta.saldo)
-		} else {
-			fmt.Println("Saldo insuficiente. Saldo atual", conta.saldo)
-		}
-	}
-}
-
-func (conta *ContaCorrente) Deposit(valor float64) {
-	if valor > 0 {
-		conta.saldo += valor
-		fmt.Println("Depósito de", valor, "realizado com sucesso na conta de", conta.titular, ". Novo saldo", conta.saldo)
-	} else {
-		fmt.Println("Não é possível depositar valores negativos. Refaça a operação.")
-	}
+	// conta3.Withdraw(1100)
+	// conta3.Deposit(-10000)
+	conta3.Transfer(1500, &conta1)
 }
