@@ -14,7 +14,7 @@ func main() {
 	var profissao = "Desenvolvedor"
 	var numeroAgencia int = 1
 	var numeroConta int = 40576891
-	var saldo float64 = 0.0
+	// var saldo float64 = 0.0
 	// fmt.Println(titular, numeroAgencia, numeroConta, saldo)
 
 	clienteRafael := titulares.PessoaFisica{Nome: titular, CPF: cpf, Profissao: profissao}
@@ -32,6 +32,10 @@ func main() {
 	conta3.Deposit(16000.0)
 	// fmt.Println(conta3)
 
+	clienteBraz := titulares.PessoaFisica{Nome: "Braz Pinto Moura", CPF: "111122233344", Profissao: "Metalúrgico"}
+	conta4 := contas.ContaPoupanca{Titular: clienteBraz, NumeroAgencia: 1111, NumeroConta: 222333, Operacao: 1}
+	conta4.Deposit(900)
+
 	// conta3.Withdraw(1100)
 	// conta3.Deposit(-10000)
 	conta3.Transfer(1500, &conta1)
@@ -39,4 +43,11 @@ func main() {
 	conta1.Extract()
 	conta2.Extract()
 	conta3.Extract()
+	conta4.Extract()
+
+	//conta1.PayBankSlip(100)
+	//conta4.PayBankSlip(100)
+
+	contas.PayBankSlip(&conta1, 100)
+	contas.PayBankSlip(&conta4, 100)
 }

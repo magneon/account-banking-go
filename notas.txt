@@ -161,3 +161,30 @@ No caso acima, estamos criando uma cópia do objeto empregado e atribuindo à va
 empregado1 := Empregado{Nome: Rafael, Salario: 1000}
 empregado1.AumentarSalario(1000)
 empregado1.ObterSalario() //Vai imprimir 1000: 1000 original
+
+#NOTAS DA AULA 5
+No Go, podemos declarar variáveis do mesmo tipo usando o separador vírgula (,):
+type ContaCorrente struct {
+    NumeroAgencia, NumeroConta, Operacao int
+    ...
+}
+
+Existem situações onde temos operações que serão comum para mais de um tipo de struct. Um exemplo disso são as operações:
+- Transferir
+- Depositar
+- Sacar
+- Pagar
+
+Todas as operações acima listadas, podem ser realizadas tanto numa Conta Corrente, quanto numa Conta Poupança.
+
+O que queremos aqui é, chamar a operação e internamente a operação resolve se é uma CC ou uma CP.
+
+Nessas situações, vamos utilizar o tipo 'interface' criando um novo tipo de estrutura:
+type Conta interface {
+    PagarBoleto(valor float64)
+}
+
+As structs que farão uso da função PagarBoleto, devem respeitar a assinatura definida na interface:
+func PagarBoleto(conta Conta, valor float64) {
+    conta.PagarBoleto(valor)
+}

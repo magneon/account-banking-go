@@ -5,14 +5,15 @@ import (
 	"fmt"
 )
 
-type ContaCorrente struct {
+type ContaPoupanca struct {
 	Titular       titulares.PessoaFisica
 	NumeroAgencia int
 	NumeroConta   int
 	saldo         float64
+	Operacao      int
 }
 
-func (conta *ContaCorrente) Withdraw(valor float64) {
+func (conta *ContaPoupanca) Withdraw(valor float64) {
 	if valor > 0 {
 		if conta.saldo > valor {
 			conta.saldo -= valor
@@ -23,7 +24,7 @@ func (conta *ContaCorrente) Withdraw(valor float64) {
 	}
 }
 
-func (conta *ContaCorrente) Deposit(valor float64) {
+func (conta *ContaPoupanca) Deposit(valor float64) {
 	if valor > 0 {
 		conta.saldo += valor
 		fmt.Println("Depósito de", valor, "realizado com sucesso na conta de", conta.Titular.Nome, ". Novo Saldo", conta.saldo)
@@ -32,27 +33,12 @@ func (conta *ContaCorrente) Deposit(valor float64) {
 	}
 }
 
-func (origem *ContaCorrente) Transfer(valor float64, destino *ContaCorrente) {
-	if valor > 0 {
-		if origem.saldo >= valor {
-			destino.Deposit(valor)
-			origem.Withdraw(valor)
-
-			fmt.Println("Transferindo", valor, "de", origem.Titular.Nome, "para", destino.Titular.Nome)
-		} else {
-			fmt.Println("Saldo insuficiente para realizar essa transferência.")
-		}
-	} else {
-		fmt.Println("Não é possível transferir valores negativos. Refaça a operação.")
-	}
+func (conta *ContaPoupanca) Extract() {
+	fmt.Println("CP: Seu saldo atualmente é de R$", conta.saldo)
 }
 
-func (conta *ContaCorrente) Extract() {
-	fmt.Println("CC: Seu saldo atualmente é de R$", conta.saldo)
-}
-
-func (conta *ContaCorrente) PayBankSlip(valor float64) {
-	if conta.saldo >= valor && valor > 0 {
+func (conta *ContaPoupanca) PayBankSlip(valor float64) {
+	if conta.saldo > 1000 && conta.saldo >= valor && valor > 0 {
 		conta.saldo -= valor
 		fmt.Println("Boleto pago com sucesso. Novo saldo", conta.saldo)
 	} else {
